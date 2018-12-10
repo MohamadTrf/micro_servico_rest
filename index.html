@@ -1,0 +1,238 @@
+<html>
+<meta charset="UTF-8">
+<head>
+<script src="angularjs/jquery.js"> </script>
+<script src="angularjs/angular.min.js"> </script>
+<script src="angularjs/app.js"> </script>
+<script src="angularjs/controller.js"> </script>
+<script src="angularjs/service.js"> </script>
+<script src="angularjs/value.js"> </script>
+<script src="angularjs/cpf_cnpj.js"> </script>
+<script src="angularjs/ngCpfCnpj.js"> </script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="materialize/js/materialize.js"></script>
+<link rel="stylesheet" type="text/css" href="style/style.css">	
+	
+	<script type="text/javascript">
+		  $(document).ready(function(){
+			$('select').formSelect();
+		  });	
+	</script>
+
+
+	 <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	
+</head>
+
+<title> Micro-Serviço </title>
+
+<body ng-app="microServico">
+ <div ng-controller="microServicoCtrl" ng-init="buscaCliente()">
+<header>
+	<nav>
+			<div class="nav-wrapper">
+			<a href="#" align = "center"  class="brand-logo">Micro-Serviço CRUD</a>
+		<ul id="nav-mobile" class="right hide-on-med-and-down">
+			<li><a href=""  ng-click="exibirForm()" class=" btn"><i class="material-icons left">add_circle_outline</i>Cadastrar Evento</a></li>
+			<li><a href=""  ng-click="limpar()" class=" btn"><i class="material-icons left">autorenew</i> Limpar</a></li>
+		</ul>
+				
+			</div>
+	</nav>
+</header>
+<div class = "container cadastroCliente" ng-show="formCadastro" ng-init="formCadastro=false"> 
+<center> <h4 ng-init="msgCadastro = false" ng-show="msgCadastro"> Cadastro de Clientes!</h4>	</center>
+<center> <h4 ng-init="msgEdita = false" ng-visible=false   ng-show="msgEdita">Alteração no Cadastro do cliente  {{cliente.nome}}!</h4>	</center>
+<form class="container"  name="cadastroCliente" method="post">
+	
+Refêrencia:<input type ="number" value="" ng-init="ref" ng-required ="true" ng-disabled="disabledCampos"  ng-model ="cliente.objref" name ="objref" id="objref"/>
+
+<div ng-if="validaObjref()"> 
+		Por favor coloque a Refêrencia
+</div>
+
+<div class="row">	
+	<div class = "input-field col s6">
+			Nome: <input type ="text" ng-init="nome"  ng-model="cliente.nome"  ng-required ="true"  name ="nome" id="nome"/>
+			<div ng-if="validaNome()">
+					Por favor coloque o Nome
+			</div>
+	</div>
+</div>
+
+<div class="row">	
+	<div class = "input-field col s6">
+			Cnpj/Cpf:<input type ="text" ng-init="cnpj=true"  ng-disabled="disabledCampos" ng-visible="cnpj"  value="" ng-model="cliente.cnpj"  ng-cpf-cnpj  name ="cnpj" id="cnpj"  />
+			<div ng-if="validaCnpj()">
+					Invalido!
+			</div>
+	</div>	   
+	    <div class = "input-field col s6">
+			Inscrição Estadual:<input type ="text" value="" ng-model="cliente.inscrestadual" name ="inscricaoEstadual" id="inscricaoEstadual"/>
+	   </div>
+</div>
+
+<div class="row">
+	    <div class = "input-field col s6">
+			Telefone:<input type ="text" value="" name ="telefone" ng-model="cliente.telefone" id="telefone"/>
+	   </div>
+	     <div class = "input-field col s6">
+			Contato:<input value=""  ng-model ="cliente.contato" name ="contato" id="contato"/>
+	   </div>
+</div>
+
+<div class = "row" >
+	<div class = "input-field col s2">
+		Municipio:<input type ="number" ng-required ="true" ng-blur="buscaMunicipio()" value=""  placeholder="numero" ng-model="cliente.objref_municipio" name ="municipio" id="municipio"/>
+		<div ng-if="validaMunicipio()">
+			{{error}}
+		</div>
+	</div>
+		<div class= "input-field col s5"> <br>  
+			<input type ="text" value="" ng-disabled="true" ng-init="cidadeEstado"  ng-required ="true" name ="cidadeEstado" ng-model="municipio.nome" id="cidadeEstado"/>
+	   </div>  <br>
+		<div class= "input-field col s3">
+			<a class=" btn"    ng-click="buscaMunicipio()"  ><i class="material-icons center">find_in_page</i>  Pesquisar</a> 
+		</div>
+</div>
+
+<div class = "row">
+	<div class="input-field col s3">
+		Situação<select name = "situação" class="browser-default" ng-model="cliente.situacao">
+			<option value="" disabled selected>Selecione </option>
+			<option name="Ativo" value="1">Ativo</option>
+			<option name="inativo" value="0">inativo</option>
+		</select>
+	</div>
+	<div class="input-field col s3">
+		Captação<select name = "captação"  class="browser-default" ng-model="cliente.captacao" >
+		<option value="" disabled selected>Selecione </option>
+		<option name="captacao1">0</option>
+		<option name="captacao2">1</option>
+		</select>
+	</div>
+</div>
+
+<div class = "row">
+	   <div class = "input-field col s6">
+			CEP:<input type ="text" ng-model="cliente.cep" max-length="10" value="" name ="cep" id="cep"/>
+	   </div>
+</div> 
+
+<fieldset>
+	<legend>Ligação  com Nvocc </legend>
+	<div class = "container cadastroCliente">
+		<div class = "row">
+			<div class = "input-field col s2">
+				Nvocc:<input type ="number"    ng-blur="buscaNvocc()" ng-init="nvocc" ng-model="cliente.referenciawmsnvocc" value="" name ="nvocc" id="nvocc"/>
+				{{error2}}	
+			</div>
+			<div class= "input-field col s9">
+			<br>  <input type ="text" value=""   ng-disabled="true" ng-model="nvocc.nome"  name ="nvoccNome" id="nvoccNome"/>
+			</div>
+		</div>
+	</div>
+</fieldset> <br>
+
+<div ng-init ="emailCadastro=false" ng-show="emailCadastro">
+<fieldset>
+<legend> Emails Autorizado pelo Nvocc </legend>	 <br>
+	<table class = "container" >
+			<tr>
+			  <th> Nome </th>
+			  <th> E-mail</th>
+			</tr>
+			<tr ng-repeat = "item in emails "   ng-class="{'selecionado negrito': item.selecionado}"  >
+				<td>  <p> <label><input type="checkbox" ng-model="item.selecionado" /><span></span></label></p> </td>
+				<td>{{item.nome}} </td>
+				<td>{{item.email}} </td>
+			</tr>
+	</table>
+
+	<br> <br> <br> 
+	
+	<div align ="center" class = "row">
+		<a class=" btn" ng-disabled="cadastroCliente.nomeEmail.$invalid || cadastroCliente.email.$invalid" ng-click="insereEmail()"> <i class="material-icons left">arrow_upward</i>Adicionar</a>
+		<a class=" btn" ng-click="deletaEmail()" > <i class="material-icons left"> arrow_downward</i>Remover</a>
+	</div>
+<br> <br>
+	<div class = "row">
+		<div class = "input-field col s6">
+				Nome:<input type ="text" ng-required="true" value="" ng-model="email.nome" ng-disabled="btnEdita"name ="nomeEmail" id="nomeEmail"/>
+				{{errorEmail}}
+		</div>
+		<div class = "input-field col s6">	
+				Email:<input type ="text" ng-required="true"  ng-model="email.email" value="" name ="email" id="email"/>
+		</div>
+	</div> 
+</fieldset>
+</div> 
+
+<a class="btn" ng-init="salvarCliente=false"  ng-show="salvarCliente" ng-click="cadastraCliente()" ng-disabled="cadastroCliente.$invalid"><i class="material-icons left">save</i>Salvar Cliente</a>
+<a class="btn" ng-show ="atualizarCliente"  ng-init="atualizarCliente = false"   ng-disabled="cadastroCliente.$invalid"  ng-click="atualizaCliente()"><i class="material-icons left">save</i>Editar Cliente</a>		
+		</form>
+ 	</div>
+
+	
+<br> <br> <br> <br> <br>
+<table class = "container">
+<div class = "row">
+	<div class = "input-field col s1">
+		Codigo: <input type ="number"  ng-model ="objref"  value="" name ="objref" id="objref"/>
+	</div>
+	<div class = "input-field col s1"> <br>
+		<a class=" btn"    ng-click="carregaApi()"  ><i class="material-icons center">find_in_page</i>  Pesquisar</a> 
+	</div>
+</div>
+	<thead>
+			<tr>
+		<div align ="center">		<h4> Lista de Clientes Cadastrados! </h4>  </div>
+	<div ng-init = "tabela=true" ng-visible = "tabela">
+				<th> Refêrencia</th>
+				<th> Nome </th>
+				<th> Cnpj/CPF </th>
+				<th> Inscrição Estadual </th> 
+				<th> Contato </th>
+				<th>Telefone </th>
+				<th> Municipio</th>
+				<th> Situação </th>
+				<th> Captação</th>
+				<th> CEP </th>
+				<th> Nvocc </th>		
+				<th> Deletar  </th>
+				<th> Editar  </th>
+			</tr>
+	 </thead>
+				<tbody ng-repeat="retorno in retorno">
+					<tr>
+						<td> {{retorno.objref}}</td>
+						<td> {{retorno.nome}}</td>
+						<td> {{retorno.cnpj}}</td>
+						<td> {{retorno.inscrestadual}}</td>
+						<td> {{retorno.contato}}</td>
+						<td> {{retorno.telefone}}</td>
+						<td> {{retorno.objref_municipio}}</td>
+						<td> {{retorno.situacao}}  </td>
+						<td> {{retorno.captacao}} </td>
+						<td> {{retorno.cep}}  </td>
+						<td>{{retorno.referenciawmsnvocc}}</td>
+						<td> <a class=" btn"   ng-click="deletaCliente()"  ><i class="material-icons center">delete</i>  </a> </td>
+						<td> <a class=" btn"   ng-click="editarCliente(retorno.objref)"   ><i class="material-icons center">border_color</i>  </a> </td>
+					</tr>
+				</tbody>
+	</div>
+
+		<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+
+<!-- fim da aplicação-->	
+	</div>
+	
+	
+	
+	
+</body>
+
+</html>
