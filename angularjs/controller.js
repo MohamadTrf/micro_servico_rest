@@ -206,7 +206,14 @@ $scope.getEmailSelecionado = function(){
 
 $scope.deletaEmail = function(){
 	var emailSelecionado = $scope.getEmailSelecionado(); //VIROU UM OBJETO
+	
+	if(emailSelecionado ==null || emailSelecionado== undefined){
+		alert("Favor selecionar um email");
+		return 
+  	}
+
 	var objref = emailSelecionado.objref;
+	
 	var apagaEmail = emailSelecionado;
 	microServicoService.deletarEmail(objref).then (function (response) {
 		alert("Email Deletado com sucesso");
@@ -240,7 +247,7 @@ $scope.deletaCliente = function(){
 			$scope.limpar();
 			alert("Cliente Deletado com sucesso");
 		 },function (error) {  
-			$scope.error= "Não foi possivel carregar os dados";
+			alert("Impossivel deletar favor selecionar um registro");
 		});
 }
 
@@ -253,6 +260,7 @@ $scope.limpar = function(){
 	$scope.municipio={};
 	$scope.nvocc={};
 	$scope.error2="";
+	$scope.exception= false;
 }
 
 $scope.buscaMunicipio = function(){

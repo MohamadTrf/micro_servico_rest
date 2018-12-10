@@ -146,7 +146,7 @@ Refêrencia:<input type ="number" value="" ng-init="ref" ng-required ="true" ng-
 			  <th> E-mail</th>
 			</tr>
 			<tr ng-repeat = "item in emails "   ng-class="{'selecionado negrito': item.selecionado}"  >
-				<td>  <p> <label><input type="checkbox" ng-model="item.selecionado" /><span></span></label></p> </td>
+				<td>  <p> <label><input type="checkbox" name="selecionado" ng-model="item.selecionado" /><span></span></label></p> </td>
 				<td>{{item.nome}} </td>
 				<td>{{item.email}} </td>
 			</tr>
@@ -155,17 +155,19 @@ Refêrencia:<input type ="number" value="" ng-init="ref" ng-required ="true" ng-
 	<br> <br> <br> 
 	
 	<div align ="center" class = "row">
-		<a class=" btn" ng-disabled="cadastroCliente.nomeEmail.$invalid || cadastroCliente.email.$invalid" ng-click="insereEmail()"> <i class="material-icons left">arrow_upward</i>Adicionar</a>
+		<a class=" btn" ng-disabled="nomeEmail.$invalid || email.$invalid" ng-click="insereEmail()"> <i class="material-icons left">arrow_upward</i>Adicionar</a>
 		<a class=" btn" ng-click="deletaEmail()" > <i class="material-icons left"> arrow_downward</i>Remover</a>
 	</div>
 <br> <br>
 	<div class = "row">
 		<div class = "input-field col s6">
-				Nome:<input type ="text" ng-required="true" value="" ng-model="email.nome" ng-disabled="btnEdita"name ="nomeEmail" id="nomeEmail"/>
-				{{errorEmail}}
+				Nome:<input type ="text"  value="" ng-model="email.nome" ng-disabled="btnEdita"name ="nomeEmail" id="nomeEmail"/>
+		<div ng-if = "nomeEmail.$invalid || email.$invalid">	
+			{{errorEmail}}
+		</div>
 		</div>
 		<div class = "input-field col s6">	
-				Email:<input type ="text" ng-required="true"  ng-model="email.email" value="" name ="email" id="email"/>
+				Email:<input type ="text" ng-model="email.email" value="" name ="email" id="email"/>
 		</div>
 	</div> 
 </fieldset>
