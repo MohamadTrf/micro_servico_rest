@@ -29,7 +29,7 @@ microServico.factory('microServicoService' ,  function($http,config)
 		return $http.get(config.baseUrl + "/buscaCnpj/" +cnpj+"/"+objref);
 	}
 
-	//buscando muncipio
+	
 	var _buscaMunicipio = function (objref) {
 			return $http.get(config.baseUrl + "/buscaMunicipio/" + objref);
 	}

@@ -194,7 +194,13 @@ $scope.cadastraCliente = function(){
 		});
 }
 
+$scope.atualizaCheckbox = function(posicao,emails){
+	angular.forEach(emails, (item, indice) => {
+		if (posicao != indice) {
+			item.selecionado = false;		}
+	});
 
+}
 
 $scope.getEmailSelecionado = function(){
 	for(var key in $scope.emails){
@@ -210,8 +216,7 @@ $scope.deletaEmail = function(){
 	if(emailSelecionado ==null || emailSelecionado== undefined){
 		alert("Favor selecionar um email");
 		return 
-  	}
-
+	  }
 	var objref = emailSelecionado.objref;
 	
 	var apagaEmail = emailSelecionado;
@@ -306,6 +311,9 @@ $scope.buscaEmail = function(){
 
 	});
 }
+
+
+
 
 function _ajustaSelects() {
 	$scope.cliente.captacao = $scope.cliente.captacao == 1 ? '1' : '0';

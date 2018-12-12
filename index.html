@@ -146,7 +146,7 @@ Refêrencia:<input type ="number" value="" ng-init="ref" ng-required ="true" ng-
 			  <th> E-mail</th>
 			</tr>
 			<tr ng-repeat = "item in emails "   ng-class="{'selecionado negrito': item.selecionado}"  >
-				<td>  <p> <label><input type="checkbox" name="selecionado" ng-model="item.selecionado" /><span></span></label></p> </td>
+				<td>  <p> <label><input type="checkbox" ng-click="atualizaCheckbox($index,emails)" name="selecionado" ng-model="item.selecionado" /><span></span></label></p> </td>
 				<td>{{item.nome}} </td>
 				<td>{{item.email}} </td>
 			</tr>
